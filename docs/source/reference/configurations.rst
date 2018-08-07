@@ -8,4 +8,5 @@ Environmental Variables
 
 Execution Control
 =================
-.. autofunction::chainermn.global_exc_hook.add_hook
+
+.. autofunction:: chainermn.global_exc_hook.add_hook
