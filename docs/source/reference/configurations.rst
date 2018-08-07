@@ -5,3 +5,7 @@ Environmental Variables
   If this variable is set to a non-emptyvlaue,
   ChainerMN installs a global hook to Python's `sys.excepthook` to call ``MPI_Abort()`` when
   an unhandled exception occurs. See :ref:`faq-global-exc-hook`
+
+Execution Control
+=================
+.. autofunction::chainermn.global_exc_hook.add_hook
