@@ -38,12 +38,12 @@ def _global_except_hook(exctype, value, traceback):
             raise e
 
 
-
 def _add_hook_if_enabled():
-    # An MPI runtime is expected to kill all of its child processes if one of them
-    # exits abnormally or without calling `MPI_Finalize()`.  However,
-    # when a Python program run on `mpi4py`, the MPI runtime often fails to detect
-    # a process failure, and the rest of the processes hang infinitely.
+    # An MPI runtime is expected to kill all of its child processes
+    # if one of them exits abnormally or without calling `MPI_Finalize()`.
+    # However, when a Python program run on `mpi4py`, the MPI runtime
+    # often fails to detect a process failure, and the rest of the processes
+    # hang infinitely.
     # It is problematic especially when you run ChainerMN programs on a cloud
     # environment, on which you are charged on time basis.
     # See https://github.com/chainer/chainermn/issues/236 for more discussion.
@@ -58,8 +58,8 @@ def _add_hook_if_enabled():
 
 
 def add_hook():
-    """
-    Add a global hook function that captures all unhandled exceptions. 
+    """Add a global hook function that captures all unhandled exceptions.
+
     The function calls MPI_Abort() to force all processes abort.
     It is useful when you run your training script on a cloud platform.
     """
