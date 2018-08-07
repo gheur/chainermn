@@ -43,13 +43,28 @@ class CommunicatorBase(six.with_metaclass(ABCMeta)):
         raise NotImplementedError()
 
     @property
-    def intra_rank(self):
-        '''Intra rank (process id in the machine) of this process integer'''
+    def size(self):
+        '''Number of processes of the cluster.'''
         raise NotImplementedError()
 
     @property
-    def size(self):
-        '''Number of nodes of the cluster'''
+    def intra_rank(self):
+        '''Intra rank (process id in the machine) of this process.'''
+        raise NotImplementedError()
+
+    @property
+    def intra_size(self):
+        '''Number of processes in the machine of this process.'''
+        raise NotImplementedError()
+
+    @property
+    def inter_rank(self):
+        '''The rank of this node in the cluster.'''
+        raise NotImplementedError()
+
+    @property
+    def inter_size(self):
+        '''Number of nodes that participates the cluster.'''
         raise NotImplementedError()
 
     @abstractmethod
@@ -80,10 +95,10 @@ class CommunicatorBase(six.with_metaclass(ABCMeta)):
         '''All-to-all implementation for ndarray
 
         Args:
-            xs (tuple of numpy.ndarray)
+            xs (tuple of numpy/cupy array)
 
         Returns:
-            ys (tuple of numpy.ndarray):
+            ys (tuple of numpy/cupy array):
                 Received arrays. The length of tuple equals to
                 the communicator size.
 
@@ -126,13 +141,13 @@ class CommunicatorBase(six.with_metaclass(ABCMeta)):
         '''Broadcasts an ndarray from root process to all processes
 
         Args:
-            data (numpy.array): for root process, the data to broadcast.
+            data (numpy/cupy array): for root process, the data to broadcast.
                 For non-root processes, this argument is ignored.
             max_buf_len (int): Length of send buffer.
             root (int): the process who has the data to broadcast.
 
         Returns:
-            ys (numpy.ndarray) : The data sent from root process
+            ys (numpy/cupy array) : The data sent from root process
 
         '''
         raise NotImplementedError()
@@ -153,14 +168,36 @@ class CommunicatorBase(six.with_metaclass(ABCMeta)):
         '''
         raise NotImplementedError()
 
-    # TODO(kuenishi): implement this function in MpiCommunicatorBase
-    # @abstractmethod
+    @abstractmethod
+    def allgather(self, x):
+        """A primitive of inter-process all-gather communication.
+
+        This method tries to invoke all-gather communication within the
+        communicator. All processes in the communicator are expected to
+        invoke ``allgather()``. This method relies on mpi4py fast communication
+        optimized for numpy arrays, as well as ``send()`` and ``recv()``.
+
+        Note that this method can only handle the same shapes of data
+        over all processes, and cannot handle tuple data.
+
+        Args:
+            x (numpy/cupy array): Array to be gathered.
+
+        Returns:
+            ys (tuple of numpy/cupy array): Received arrays.
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
     def allreduce(self, data):
         '''Allreduce operation among processes
 
         Processes one of several aggregation operations using all data from
         all processes and returns the result of the aggregation to all
         processes.
+
+        TODO(kuenishi): add ``op`` argument once we find a use case
+        for operations other than 'SUM'.
 
         Args:
             data (ndarray): the data to aggregate among all nodes.
