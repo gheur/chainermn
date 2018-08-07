@@ -63,3 +63,4 @@ Configurations
 .. toctree::
   .maxdepth: 1
   configurations
+.. autofunction::chainermn.global_exc_hook.add_hook

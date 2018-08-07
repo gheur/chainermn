@@ -18,6 +18,6 @@ from chainermn.extensions import create_multi_node_evaluator  # NOQA
 from chainermn.links import MultiNodeChainList  # NOQA
 from chainermn.optimizers import create_multi_node_optimizer  # NOQA
 
-global_exc_hook.add_hook_if_enabled()
+global_exc_hook._add_hook_if_enabled()
 
 __version__ = pkg_resources.get_distribution('chainermn').version
