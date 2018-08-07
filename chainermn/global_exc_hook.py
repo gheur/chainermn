@@ -61,6 +61,7 @@ def add_hook():
     """
     Add a global hook function that captures all unhandled exceptions. 
     The function calls MPI_Abort() to force all processes abort.
+    It is useful when you run your training script on a cloud platform.
     """
     global _orig_exc_hook
 
