@@ -44,9 +44,9 @@ Functions
 .. autofunction:: chainermn.functions.recv
 .. autofunction:: chainermn.functions.pseudo_connect
 .. autofunction:: chainermn.functions.bcast
-.. autofunction:: chainermn.functions.gather	
-.. autofunction:: chainermn.functions.scatter	
-.. autofunction:: chainermn.functions.alltoall	
+.. autofunction:: chainermn.functions.gather
+.. autofunction:: chainermn.functions.scatter
+.. autofunction:: chainermn.functions.alltoall
 .. autofunction:: chainermn.functions.allgather
 
 
